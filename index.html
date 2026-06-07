@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>內外合一：妳的顯化能量診斷</title>
+    <style>
+        :root {
+            --light-pink: #FFF5F7;
+            --btn-pink: #FFB6C1;
+            --gold: #FFD700;
+            --text-dark: #4A4A4A;
+            --note-gray: #888;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(135deg, var(--light-pink) 0%, #ffffff 100%);
+            color: var(--text-dark);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+
+        #container {
+            width: 90%; max-width: 480px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
+            text-align: center; border: 1px solid var(--btn-pink);
+            position: relative; min-height: 400px;
+        }
+
+        /* 回上一步按鈕樣式 */
+        #back-btn {
+            position: absolute; top: 20px; left: 20px;
+            font-size: 0.85rem; color: var(--note-gray);
+            background: none; border: none; cursor: pointer;
+            display: none; align-items: center; transition: 0.3s;
+        }
+        #back-btn:hover { color: var(--btn-pink); }
+
+        .step { display: none; animation: fadeIn 0.8s ease-in-out; }
+        .step.active { display: block; }
+
+        h1 { color: var(--gold); font-size: 1.4rem; margin-top: 15px; margin-bottom: 20px; line-height: 1.4; }
+        p { font-size: 0.95rem; line-height: 1.7; margin-bottom: 20px; }
+        
+        .cover-img { width: 100%; border-radius: 15px; margin-bottom: 20px; }
+
+        .btn-group { margin-bottom: 20px; }
+        .btn {
+            display: block; width: 100%; padding: 14px; margin: 8px 0 4px 0;
+            background: white; color: var(--text-dark);
+            border: 2px solid var(--btn-pink); border-radius: 50px;
+            cursor: pointer; transition: all 0.3s; font-size: 1rem; font-weight: bold;
+        }
+        .btn:hover { background: var(--btn-pink); color: white; transform: scale(1.02); }
+        
+        .btn-note { font-size: 0.8rem; color: var(--note-gray); margin-bottom: 15px; padding: 0 10px; line-height: 1.4; }
+
+        .profile-img { width: 150px; height: 150px; border-radius: 50%; border: 4px solid white; margin: 15px auto; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .diamond { font-size: 50px; cursor: pointer; animation: pulse 2s infinite; margin: 20px 0; display: inline-block; }
+        input { width: 85%; padding: 12px; border-radius: 25px; border: 1px solid var(--btn-pink); margin-bottom: 10px; text-align: center; font-size: 1rem; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .result-box { background:#fffaf0; padding:15px; border-radius:15px; margin-top:10px; border:1px dashed var(--gold); display:none; }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <button id="back-btn" onclick="prevStep()">← 回上一步</button>
+
+    <div class="step active" id="step1">
+        <img src="cover.png" alt="能量封面" class="cover-img">
+        <h1>感知當下的頻率</h1>
+        <p>歡迎來到這空間。在追求外在豐盛前，<br>先看看妳目前的能量狀態。</p>
+        <div class="btn-group">
+            <button class="btn" onclick="goStep(2, 'beauty')">肌膚聖殿的修復</button>
+            <p class="btn-note">找回肌膚與身體的自信，由內而外散發光澤。</p>
+            <button class="btn" onclick="goStep(2, 'wealth')">財富能量的流轉</button>
+            <p class="btn-note">建立一套屬於自己的豐盛系統，讓收入隨心流動。</p>
+            <button class="btn" onclick="goStep(2, 'both')">全方位的覺醒</button>
+            <p class="btn-note">我渴望身心靈的平衡，也想要外在與經濟的自由。</p>
+        </div>
+    </div>
+
+    <div class="step" id="step2">
+        <h1 id="step2-h">觀察妳的鏡中能量</h1>
+        <p id="step2-p"></p>
+        <div id="step2-opts"></div>
+    </div>
+
+    <div class="step" id="step3">
+        <h1 id="step3-h">能量場的轉化</h1>
+        <p id="step3-p"></p>
+        <div id="step3-opts"></div>
+    </div>
+
+    <div class="step" id="step4">
+        <h1>能量路徑已開啟</h1>
+        <p id="res-desc"></p>
+        <div class="diamond" onclick="document.getElementById('diamond-info').style.display='block'">💎</div>
+        <p><small>點擊這顆鑽石，看看它如何喚醒肌膚</small></p>
+        <div id="diamond-info" class="result-box">
+            <p style="font-size:0.9rem;"><strong>微晶煥膚原理：</strong><br>這是一種物理性代謝，就像清理老舊能量，讓新細胞重生，重現原生肌膚光采。</p>
+            <button class="btn" onclick="goStep(5)">開啟下一步</button>
+        </div>
+    </div>
+
+    <div class="step" id="step5">
+        <h1>內外合一的秘密</h1>
+        <p id="extra-msg" style="display:none; color:var(--btn-pink); font-weight:bold;">如果您也想將這份美傳遞出去，我們的團隊提供的不只是產品，還有身心靈的共創空間。</p>
+        <p>嗨你好～我是凱特，我想送妳一份專屬的《身心靈美學對策》。這份對策結合了韓國頂尖的科學修護技術與我們的療癒心法。</p>
+        <img src="kate-profile.jpg" alt="Kate" class="profile-img">
+        <p>請留下妳的 LINE 或 Email，<br>我將把這份『能量轉化地圖』傳送給妳。</p>
+        <input type="text" id="user-line" placeholder="您的 LINE ID">
+        <input type="email" id="user-email" placeholder="您的 Email">
+        <button class="btn" onclick="validateAndFinish()" style="background: var(--btn-pink); color: white; margin-top:15px;">領取專屬顯化對策</button>
+    </div>
+</div>
+
+<script>
+    let path = '';
+    let stepHistory = []; // 用來儲存歷史步驟
+
+    function goStep(s, p) {
+        // 儲存當前狀態到歷史
+        const currentActive = document.querySelector('.step.active');
+        if (currentActive) {
+            stepHistory.push({
+                id: currentActive.id,
+                path: path
+            });
+        }
+
+        if(p) path = p;
+        renderStep(s);
+    }
+
+    function prevStep() {
+        if (stepHistory.length > 0) {
+            const lastState = stepHistory.pop();
+            path = lastState.path;
+            
+            // 如果是從 wealth_after_beauty 回去，要修正路徑回 both
+            if(path === 'wealth_after_beauty' && lastState.id === 'step2') {
+                path = 'both'; 
+            }
+
+            const stepNum = lastState.id.replace('step', '');
+            renderStep(stepNum);
+        }
+    }
+
+    function renderStep(s) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        const target = document.getElementById('step' + s);
+        target.classList.add('active');
+
+        // 控制回上一步按鈕顯示
+        document.getElementById('back-btn').style.display = (s == 1) ? 'none' : 'flex';
+
+        if(s==2) setup2();
+        if(s==3) setup3();
+        if(s==4) setup4();
+        if(s==5) {
+            const isWealthyPath = (path==='wealth' || path==='both' || path==='wealth_after_beauty');
+            document.getElementById('extra-msg').style.display = isWealthyPath ? 'block' : 'none';
+        }
+    }
+
+    function setup2() {
+        const h = document.getElementById('step2-h'), p = document.getElementById('step2-p'), opts = document.getElementById('step2-opts');
+        opts.innerHTML = '';
+        
+        if(path === 'beauty' || path === 'both') {
+            h.innerText = "聽聽肌膚的心聲";
+            p.innerText = "如果肌膚會說話，它現在的情緒是？";
+            const items = [['乾枯與疲憊', '缺水暗沉'], ['感到被時間追趕', '鬆弛細紋'], ['正在發出抗議訊號', '敏感痘痘'], ['可能都有', '全方位的疲慮'], ['有其他狀況', '獨特的修復需求']];
+            items.forEach(i => { opts.innerHTML += `<button class="btn" onclick="goStep(3)">${i[0]}</button><p class="btn-note">${i[1]}</p>`; });
+        } else {
+            h.innerText = "檢視財富的流動";
+            p.innerText = "目前的事業或生活中，哪種焦慮最深刻？";
+            const items = [['止步不前', '努力很多，但財富沒有明顯增長。'], ['孤軍奮戰', '缺乏一個能量共振、互相扶持的團隊。'], ['轉化為志業', '想要將「助人身心靈美麗」轉化為志業'], ['以上皆是', '我渴望全方位的突破']];
+            items.forEach(i => { opts.innerHTML += `<button class="btn" onclick="goStep(3)">${i[0]}</button><p class="btn-note">${i[1]}</p>`; });
+        }
+    }
+
+    function setup3() {
+        const h = document.getElementById('step3-h'), p = document.getElementById('step3-p'), opts = document.getElementById('step3-opts');
+        opts.innerHTML = '';
+        if(path === 'beauty' || path === 'both') {
+            h.innerText = "信念的共振";
+            p.innerText = "妳相信「物理性的改變」也能影響「心理能量」嗎？";
+            opts.innerHTML += `<button class="btn" onclick="goNextAfterBeauty()">我相信</button><p class="btn-note">當我變美，我的能量場也會隨之翻轉。</p>`;
+            opts.innerHTML += `<button class="btn" onclick="goNextAfterBeauty()">我在尋找溫柔力量</button><p class="btn-note">替代醫美冒險，就能讓肌膚重生的溫柔力量。</p>`;
+        } else {
+            h.innerText = "利他且利己的願望";
+            p.innerText = "妳是否在尋找一個「利他且利己」的媒介？";
+            opts.innerHTML += `<button class="btn" onclick="goStep(4)">是的</button><p class="btn-note">幫助他人的同時也成就自己，這是我一直以來的願望。</p>`;
+            opts.innerHTML += `<button class="btn" onclick="goStep(4)">先幫助我自己</button><p class="btn-note">幫助別人也很好，但現階段我想先專注於自己的豐盛</p>`;
+        }
+    }
+
+    function goNextAfterBeauty() {
+        if(path === 'both') {
+            path = 'wealth_after_beauty';
+            goStep(2);
+        } else {
+            goStep(4);
+        }
+    }
+
+    function setup4() {
+        const desc = document.getElementById('res-desc');
+        const isBeauty = (path === 'beauty');
+        desc.innerHTML = isBeauty ? "妳適合：<br><strong>【42 天細胞重生計畫】</strong>" : "妳適合：<br><strong>【豐盛女神創業模組】</strong>";
+        document.getElementById('diamond-info').style.display = 'none'; // 重設鑽石資訊
+    }
+
+    function validateAndFinish() {
+        const line = document.getElementById('user-line').value;
+        const email = document.getElementById('user-email').value;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!line && !email) { alert('請至少填寫一項聯絡方式喔！'); return; }
+        if (email && !emailPattern.test(email)) { alert('請填寫正確的 Email 格式'); return; }
+        alert('能量訊號已傳送！凱特會盡快聯繫妳 ✨');
+    }
+</script>
+
+</body>
+</html>
